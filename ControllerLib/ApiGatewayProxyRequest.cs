@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace ControllerLib
 {
     [Serializable]
-    public abstract class ApiGatewayProxyRequest
+    public class ApiGatewayProxyRequest
     {
         public string Resource { get; set; }
 

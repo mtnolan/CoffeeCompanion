@@ -39,7 +39,7 @@ namespace AddCoffeeByURL
       var body = UtilityLibrary.Serialize(coffeeData);
       _context?.Logger.LogLine(body);
 
-      var dbContext = new CoffeeContext();
+      var dbContext = new CoffeeContext(_context);
 
       var id = GenerateIDFromURL(url);
       var success = await dbContext.AddCoffee(id, title, description, ogImage);

@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddCoffeeByURL", "AddCoffee
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamoContext", "DynamoContext\DynamoContext.csproj", "{1B121B17-3FB0-4C93-9AA0-873C3DB1FD4E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoveCoffee", "RemoveCoffee\RemoveCoffee.csproj", "{C3B99B8B-058E-4A81-9816-59AF661CE593}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{1B121B17-3FB0-4C93-9AA0-873C3DB1FD4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B121B17-3FB0-4C93-9AA0-873C3DB1FD4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B121B17-3FB0-4C93-9AA0-873C3DB1FD4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3B99B8B-058E-4A81-9816-59AF661CE593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3B99B8B-058E-4A81-9816-59AF661CE593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3B99B8B-058E-4A81-9816-59AF661CE593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3B99B8B-058E-4A81-9816-59AF661CE593}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
