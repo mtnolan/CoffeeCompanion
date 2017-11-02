@@ -15,7 +15,7 @@ using DynamoContext;
 
 namespace AddCoffeeByURL
 {
-  public class Function :FunctionBase
+  public class Function : FunctionBase
   {
     protected override async Task<LambdaProxyResponse> ExecutionFunction(
       ApiGatewayProxyRequest request)
