@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamoContext", "DynamoCont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoveCoffee", "RemoveCoffee\RemoveCoffee.csproj", "{C3B99B8B-058E-4A81-9816-59AF661CE593}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportSpill", "ReportSpill\ReportSpill.csproj", "{A1158C1A-EC22-45D1-91D5-D2838E9917B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{C3B99B8B-058E-4A81-9816-59AF661CE593}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3B99B8B-058E-4A81-9816-59AF661CE593}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3B99B8B-058E-4A81-9816-59AF661CE593}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1158C1A-EC22-45D1-91D5-D2838E9917B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1158C1A-EC22-45D1-91D5-D2838E9917B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1158C1A-EC22-45D1-91D5-D2838E9917B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1158C1A-EC22-45D1-91D5-D2838E9917B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
