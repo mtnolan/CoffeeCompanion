@@ -10,13 +10,16 @@ namespace ControllerLib
   public abstract class FunctionBase {
     protected ILambdaContext _context;
 
+    protected ApiGatewayProxyRequest _request;
+
     public async Task<LambdaProxyResponse> FunctionHandler(ApiGatewayProxyRequest request, ILambdaContext context)
     {
       _context = context;
 
       LambdaProxyResponse response;
       try {
-        response = await ExecutionFunction(request);
+        context.Logger.LogLine(SerializerUtil.Serialize(request));
+        response = await ExecutionFunction((ApiGatewayProxyRequest) request);
       } catch (Exception e) {
         _context?.Logger.LogLine(UtilityLibrary.Serialize(e));
         return new LambdaProxyResponse {
@@ -25,6 +28,10 @@ namespace ControllerLib
         };
       }
       return response;
+    }
+
+    private void SetRequest(object request)
+    {
     }
 
     protected abstract Task<LambdaProxyResponse> ExecutionFunction(

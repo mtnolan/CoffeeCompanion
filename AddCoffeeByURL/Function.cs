@@ -20,7 +20,9 @@ namespace AddCoffeeByURL
     protected override async Task<LambdaProxyResponse> ExecutionFunction(
       ApiGatewayProxyRequest request)
     {
-      var requestBody = FunctionBody.GenerateFromRequest(request);
+
+      _context.Logger.LogLine(request.Body);
+      var requestBody = FunctionBody.GenerateFromRequest(request, _context);
       var htmlWeb = new HtmlWeb();
       var url = requestBody.url;
 
@@ -30,10 +32,11 @@ namespace AddCoffeeByURL
       var title = GetTitle(document);
       var description = GetMetaValue(document, "description");
 
-      var coffeeData = new CoffeeData {
+      var coffeeData = new CoffeeData
+      {
         Title = title,
         Description = description,
-        OGImage = ogImage,
+        OGImage = ogImage ?? "",
       };
 
       var body = UtilityLibrary.Serialize(coffeeData);
@@ -46,7 +49,8 @@ namespace AddCoffeeByURL
 
       return success
         ? new LambdaProxyResponse { statusCode = HttpStatusCode.Created }
-        : new LambdaProxyResponse {
+        : new LambdaProxyResponse
+        {
           statusCode = HttpStatusCode.InternalServerError
         };
     }
@@ -66,10 +70,12 @@ namespace AddCoffeeByURL
 
     private string GetMetaValue(HtmlDocument document, string metaName)
     {
-      try {
+      try
+      {
         var valueNode = document.DocumentNode.Descendants("meta").FirstOrDefault(x => x.GetAttributeValue("property", null) == metaName);
 
-        if (valueNode != null) {
+        if (valueNode != null)
+        {
           return valueNode.GetAttributeValue("content", null);
         }
 
@@ -78,7 +84,9 @@ namespace AddCoffeeByURL
 
         return valueNode?.GetAttributeValue("content", null);
 
-      } catch (Exception ex) {
+      }
+      catch (Exception ex)
+      {
         throw new Exception("Failed getting metadata tag: " + metaName, ex);
       }
     }
@@ -106,11 +114,24 @@ namespace AddCoffeeByURL
   [Serializable]
   internal class FunctionBody
   {
-    public static FunctionBody GenerateFromRequest(
-      ApiGatewayProxyRequest request
-    )
+    const string USER_AGENT = "user-agent";
+    const string SLACKBOT = "slackbot";
+    public static FunctionBody GenerateFromRequest(ApiGatewayProxyRequest request, ILambdaContext context)
     {
-      return SerializerUtil.Deserialize<FunctionBody>(request.Body);
+      var key = request.Headers.Keys.FirstOrDefault(x => x.ToLower() == USER_AGENT);
+
+      if (key != null && request.Headers[key].ToLower().Contains(SLACKBOT))
+      {
+        context.Logger.LogLine("slack!");
+        return new FunctionBody
+        {
+          url = "https://www.google.com",
+        };
+      } else
+      {
+        context.Logger.LogLine("not slack!");
+        return SerializerUtil.Deserialize<FunctionBody>(request.Body);
+      }
     }
 
     [DataMember]

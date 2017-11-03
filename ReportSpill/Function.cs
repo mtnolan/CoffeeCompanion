@@ -19,7 +19,7 @@ namespace ReportSpill
             var slackhookuri = "https://hooks.slack.com/services/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";
             var client = new SlackClient(new Uri(slackhookuri));
 
-            var response = await client.SendMessageAsync("message");
+            var response = await client.SendMessageAsync("A spill has been reported!  If you were the brewer, please go help cleanup!");
 
 
             if (response.StatusCode == HttpStatusCode.OK)

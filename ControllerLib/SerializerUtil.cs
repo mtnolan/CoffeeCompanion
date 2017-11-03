@@ -12,7 +12,9 @@ namespace ControllerLib
 
       var memStream = new MemoryStream();
       ser.Serialize(value, memStream);
-      var json = memStream.ToString();
+      memStream.Position = 0;
+      var sr = new StreamReader(memStream);
+      var json = sr.ReadToEnd();
       memStream.Flush();
       return json;
     }

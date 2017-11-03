@@ -13,6 +13,7 @@ namespace DynamoContext
       stock = new List<Dictionary<string, string>>();
     }
 
+    [DynamoDBHashKey]
     public string key { get; set; }
 
     public List<Dictionary<string, string>> stock { get; set; }
