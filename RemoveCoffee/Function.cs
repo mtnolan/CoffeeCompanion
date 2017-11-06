@@ -39,7 +39,7 @@ namespace RemoveCoffee
         : new LambdaProxyResponse {
           statusCode = HttpStatusCode.OK,
         };
-
+      
     }
 
     [Serializable]

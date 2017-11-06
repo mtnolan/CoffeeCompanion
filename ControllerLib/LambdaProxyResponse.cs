@@ -17,5 +17,10 @@ namespace ControllerLib
     public HttpStatusCode statusCode { get; set; }
 
     public string body { get; set; }
+
+    public override string ToString()
+    {
+      return SerializerUtil.Serialize(this);
+    }
   }
 }

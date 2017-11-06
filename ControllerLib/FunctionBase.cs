@@ -20,6 +20,7 @@ namespace ControllerLib
       try {
         context.Logger.LogLine(SerializerUtil.Serialize(request));
         response = await ExecutionFunction((ApiGatewayProxyRequest) request);
+        _context?.Logger.LogLine(UtilityLibrary.Serialize(response));
       } catch (Exception e) {
         _context?.Logger.LogLine(UtilityLibrary.Serialize(e));
         return new LambdaProxyResponse {

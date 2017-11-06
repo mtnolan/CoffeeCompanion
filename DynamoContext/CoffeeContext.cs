@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.Lambda.Core;
-using Amazon.Runtime.Internal.Util;
+using DynamoContext.Entities;
 
 namespace DynamoContext
 {
@@ -34,25 +34,25 @@ namespace DynamoContext
 
       if (currentCoffeeList == null) {
         currentCoffeeList = new CurrentCoffeeList {
-          key = CurrentCoffeeKey
+          Key = CurrentCoffeeKey
         };
       }
 
-      if (currentCoffeeList.stock.Any(x => x["id"] == idString)) {
+      _context?.Logger.LogLine("Current coffee Loaded");
+
+      if (currentCoffeeList.Stock.Any(x => x.Id == idString)) {
         // Already checked in
         return true;
       }
 
-      currentCoffeeList.stock.Add(new Dictionary<string, string> {
-        {"description", description },
-        {"id", idString },
-        {"image", imageUrl },
-        {"title", title },
-      });
+      currentCoffeeList.Stock.Add(new Coffee(idString, description, imageUrl, title));
 
       try {
         await dbContext.SaveAsync(currentCoffeeList);
-      } catch (Exception e) {
+
+        _context?.Logger.LogLine("Save success");
+      }
+      catch (Exception e) {
         _context?.Logger.LogLine(e.ToString());
         return false;
       }
@@ -74,14 +74,14 @@ namespace DynamoContext
       }
 
       var matchingCoffee =
-        currentCoffeeList.stock.FirstOrDefault(x => x["id"] == id);
+        currentCoffeeList.Stock.FirstOrDefault(x => x.Id == id);
 
       if (matchingCoffee == null) {
         // TODO: Add logging
         return true;
       }
 
-      currentCoffeeList.stock.Remove(matchingCoffee);
+      currentCoffeeList.Stock.Remove(matchingCoffee);
       try {
         await dbContext.SaveAsync(currentCoffeeList);
       } catch (Exception e) {
@@ -89,6 +89,13 @@ namespace DynamoContext
         return false;
       }
       return true;
+    }
+
+    public async Task<List<Coffee>> GetCurrentCoffee()
+    {
+      var dbContext = GetDynamoDbContext();
+      var currentCoffeeList = await dbContext.LoadAsync<CurrentCoffeeList>(CurrentCoffeeKey);
+      return currentCoffeeList.Stock.ToList();
     }
 
     private static DynamoDBContext GetDynamoDbContext() {

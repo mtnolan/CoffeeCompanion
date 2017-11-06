@@ -20,7 +20,6 @@ namespace AddCoffeeByURL
     protected override async Task<LambdaProxyResponse> ExecutionFunction(
       ApiGatewayProxyRequest request)
     {
-
       _context.Logger.LogLine(request.Body);
       var requestBody = FunctionBody.GenerateFromRequest(request, _context);
       var htmlWeb = new HtmlWeb();
@@ -114,22 +113,20 @@ namespace AddCoffeeByURL
   [Serializable]
   internal class FunctionBody
   {
-    const string USER_AGENT = "user-agent";
-    const string SLACKBOT = "slackbot";
     public static FunctionBody GenerateFromRequest(ApiGatewayProxyRequest request, ILambdaContext context)
     {
-      var key = request.Headers.Keys.FirstOrDefault(x => x.ToLower() == USER_AGENT);
-
-      if (key != null && request.Headers[key].ToLower().Contains(SLACKBOT))
+      if (request.IsSlackRequest())
       {
-        context.Logger.LogLine("slack!");
+        var slackRequest = new SlackRequest(request.Body);
+        var decodedText = WebUtility.UrlDecode(slackRequest.Text);
+        slackRequest.Text = decodedText.TrimStart('<').TrimEnd('>');
+        context.Logger.LogLine(SerializerUtil.Serialize(slackRequest));
         return new FunctionBody
         {
-          url = "https://www.google.com",
+          url = slackRequest.Text,
         };
       } else
       {
-        context.Logger.LogLine("not slack!");
         return SerializerUtil.Deserialize<FunctionBody>(request.Body);
       }
     }
