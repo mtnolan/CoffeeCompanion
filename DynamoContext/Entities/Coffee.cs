@@ -37,7 +37,22 @@ namespace DynamoContext.Entities
 
       foreach (var coffeeMap in entry.AsListOfDocument())
       {
-        list.Add(new Coffee(coffeeMap[ID], coffeeMap[DESCRIPTION], coffeeMap[IMAGE], coffeeMap[TITLE]));
+        var description =
+          coffeeMap.ContainsKey(DESCRIPTION)
+            ? (string)coffeeMap[DESCRIPTION]
+            : string.Empty;
+
+        var image =
+          coffeeMap.ContainsKey(IMAGE)
+            ? (string)coffeeMap[IMAGE]
+            : string.Empty;
+
+        var title =
+          coffeeMap.ContainsKey(TITLE)
+            ? (string)coffeeMap[TITLE]
+            : string.Empty;
+
+        list.Add(new Coffee(coffeeMap[ID], description, image, title));
       }
       return list;
     }
@@ -51,9 +66,9 @@ namespace DynamoContext.Entities
         list.Add(
           new Document(new Dictionary<string, DynamoDBEntry> {
             { ID, coffee.Id },
-            { DESCRIPTION, coffee.Description },
-            { IMAGE, coffee.Image },
-            { TITLE, coffee.Title },
+            { DESCRIPTION, coffee.Description ?? string.Empty},
+            { IMAGE, coffee?.Image ?? string.Empty },
+            { TITLE, coffee?.Title ?? string.Empty },
           })
         );
       }

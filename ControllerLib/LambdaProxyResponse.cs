@@ -9,7 +9,10 @@ namespace ControllerLib
   {
     public LambdaProxyResponse()
     {
-      headers = new Dictionary<string, string>();
+      headers = new Dictionary<string, string>
+      {
+        {"Access-Control-Allow-Origin", "*" },
+      };
     }
 
     public Dictionary<string, string> headers { get; set; }
