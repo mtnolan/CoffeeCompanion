@@ -24,11 +24,8 @@ namespace RemoveCoffee
       }
 
       var id = request.PathParameters["id"];
-
       var dbContext = new CoffeeContext(_context);
-      var success = await dbContext.RemoveCoffee(id);
-
-      return !success
+      return !await dbContext.RemoveCoffee(id)
         ? new LambdaProxyResponse
         {
           statusCode = HttpStatusCode.InternalServerError,
