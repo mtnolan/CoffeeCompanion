@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 using Amazon.Lambda.Core;
@@ -14,47 +10,34 @@ using DynamoContext;
 
 namespace RemoveCoffee
 {
-  public class Function :FunctionBase
+  public class Function : FunctionBase
   {
     protected override async Task<LambdaProxyResponse> ExecutionFunction(ApiGatewayProxyRequest request)
     {
-      var requestBody = FunctionBody.GenerateFromRequest(request);
-      var id = requestBody.id;
-
-      if (string.IsNullOrWhiteSpace(id)) {
-        return new LambdaProxyResponse {
+      if (!request.PathParameters.ContainsKey("id"))
+      {
+        return new LambdaProxyResponse
+        {
           statusCode = HttpStatusCode.BadRequest,
-          body = "No Coffee ID defined",
+          body = "No coffee ID defined in path parameter.",
         };
       }
+
+      var id = request.PathParameters["id"];
 
       var dbContext = new CoffeeContext(_context);
       var success = await dbContext.RemoveCoffee(id);
 
       return !success
-        ? new LambdaProxyResponse {
+        ? new LambdaProxyResponse
+        {
           statusCode = HttpStatusCode.InternalServerError,
           body = "There was a problem processing the request.",
         }
-        : new LambdaProxyResponse {
+        : new LambdaProxyResponse
+        {
           statusCode = HttpStatusCode.OK,
         };
-      
     }
-
-    [Serializable]
-    internal class FunctionBody
-    {
-      public static FunctionBody GenerateFromRequest(
-        ApiGatewayProxyRequest request
-      )
-      {
-        return SerializerUtil.Deserialize<FunctionBody>(request.Body);
-      }
-
-      [DataMember]
-      public string id { get; set; }
-    }
-
   }
 }
